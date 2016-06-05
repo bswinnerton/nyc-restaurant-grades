@@ -1,3 +1,4 @@
+ruby '2.3.0'
 source 'https://rubygems.org'
 
 
@@ -47,3 +48,4 @@ end
 
 gem 'rest-client'
 gem 'pry-rails'
+gem 'rails_12factor'
