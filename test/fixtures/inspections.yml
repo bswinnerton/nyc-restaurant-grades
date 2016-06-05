@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  restaurant_id: 1
+  type: MyText
+  inspected_at: 2016-06-05 17:08:29
+  graded_at: 2016-06-05 17:08:29
+  score: 1
+  violation_description: MyText
+  violation_code: MyText
+  grade: MyText
+
+two:
+  restaurant_id: 1
+  type: MyText
+  inspected_at: 2016-06-05 17:08:29
+  graded_at: 2016-06-05 17:08:29
+  score: 1
+  violation_description: MyText
+  violation_code: MyText
+  grade: MyText

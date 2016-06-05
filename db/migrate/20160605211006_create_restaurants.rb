@@ -1,0 +1,15 @@
+class CreateRestaurants < ActiveRecord::Migration
+  def change
+    create_table :restaurants do |t|
+      t.text :name
+      t.text :camis
+      t.text :building_number
+      t.text :street
+      t.text :zipcode
+      t.text :borough
+      t.text :cuisine
+
+      t.timestamps null: false
+    end
+  end
+end
