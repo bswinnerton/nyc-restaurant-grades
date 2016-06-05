@@ -49,3 +49,4 @@ end
 gem 'rest-client'
 gem 'pry-rails'
 gem 'rails_12factor'
+gem 'graphiql-rails'
