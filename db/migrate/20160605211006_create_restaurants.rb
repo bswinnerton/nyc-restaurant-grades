@@ -6,7 +6,7 @@ class CreateRestaurants < ActiveRecord::Migration
       t.text :building_number
       t.text :street
       t.text :zipcode
-      t.text :borough
+      t.integer :borough
       t.text :cuisine
 
       t.timestamps null: false
