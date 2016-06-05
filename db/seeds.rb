@@ -40,7 +40,6 @@ while not_broken
         next unless restaurant_data['dba']
 
         restaurant = Restaurant.find_or_create_by(camis: camis) do |r|
-          r.camis            = camis
           r.name             = restaurant_data['dba'].titleize
           r.building_number  = restaurant_data['building']
           r.street           = restaurant_data['street'].titleize
