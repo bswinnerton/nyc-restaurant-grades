@@ -7,15 +7,13 @@ module Graph
       interfaces [NodeIdentification.interface]
       global_id_field :id
 
-      #TODO: Convert all snake_case to camelCase
-
       field :type,                    types.String
-      field :violation_description,   types.String
-      field :violation_code,          types.String
+      field :violationDescription,    types.String,   property: :violation_description
+      field :violationCode,           types.String,   property: :violation_code
       field :grade,                   types.String
       field :score,                   types.Int
-      field :inspected_at,            !types.String
-      field :graded_at,               types.String
+      field :inspectedAt,             !types.String,  property: :inspected_at
+      field :gradedAt,                types.String,   property: :graded_at
 
       field :restaurant, !Types::Restaurant do
         resolve -> (object, arguments, context) do
