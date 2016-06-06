@@ -31,3 +31,5 @@ query {
   }
 }
 ```
+
+**The data backing this application is not regularly updated**
