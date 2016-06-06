@@ -4,6 +4,13 @@ class Restaurant < ActiveRecord::Base
   has_many :inspections
 
   def grade
-    inspections.where.not(grade: nil).order(inspected_at: :desc).last.grade
+    return unless last_inspection
+    last_inspection.grade
+  end
+
+  private
+
+  def last_inspection
+    inspections.where.not(grade: nil).order(inspected_at: :desc).last
   end
 end
