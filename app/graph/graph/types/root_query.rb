@@ -29,14 +29,14 @@ module Graph
 
         resolve -> (object, arguments, context) do
           name = arguments['name']
-          borough = arguments['borough']
+          borough = ::Restaurant.boroughs[arguments['borough']]
 
           if name && borough
             ::Restaurant.where(name: name, borough: borough)
           elsif name
             ::Restaurant.where(name: arguments['name'])
           elsif borough
-            ::Restaurant.send(borough)
+            ::Restaurant.where(borough: borough)
           end
         end
       end
