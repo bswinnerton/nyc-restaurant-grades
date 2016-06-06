@@ -1,12 +1,5 @@
 module Graph
   module Types
-    RestaurantBoroughEnum = GraphQL::EnumType.define do
-      name "RestaurantBorough"
-      description "The borough in which the Restaurant resides."
-
-      ::Restaurant.boroughs.each { |name, _| value(name, name.titleize) }
-    end
-
     Restaurant = GraphQL::ObjectType.define do
       name "Restaurant"
       description "A place of business serving food in New York City"
