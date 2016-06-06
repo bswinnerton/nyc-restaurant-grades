@@ -33,7 +33,7 @@ module Graph
           if name && borough
             ::Restaurant.where(name: name, borough: borough)
           elsif name
-            ::Restaurant.where(name: arguments['name'])
+            ::Restaurant.where(name: name)
           elsif borough
             ::Restaurant.where(borough: borough)
           end
