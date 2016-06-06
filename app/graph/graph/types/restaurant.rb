@@ -9,10 +9,10 @@ module Graph
 
       field :name,            !types.String, "The 'doing-business-as' value of the Restaurant."
       field :camis,           !types.String, "The unique identifier of the Restaurant."
-      field :building_number, !types.String, "The street number of the Restaurant."
-      field :street,          !types.String, "The street name of the Restaurant."
-      field :zipcode,         !types.String, "The zip code of the Restaurant."
-      field :cuisine,         !types.String, "The cuisine of the Restaurant."
+      field :building_number, types.String, "The street number of the Restaurant."
+      field :street,          types.String, "The street name of the Restaurant."
+      field :zipcode,         types.String, "The zip code of the Restaurant."
+      field :cuisine,         types.String, "The cuisine of the Restaurant."
     end
   end
 end
