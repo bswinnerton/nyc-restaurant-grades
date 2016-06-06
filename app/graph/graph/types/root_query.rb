@@ -9,7 +9,7 @@ module Graph
       field :node, :field => Types::NodeIdentification.field
 
       field :restaurant do
-        type -> { !Types::Restaurant }
+        type -> { Types::Restaurant }
         description "Perform a search across all Restaurants."
 
         argument :name, types.String
@@ -22,7 +22,7 @@ module Graph
 
       connection :restaurants, -> { !Types::Restaurant.connection_type } do
         description "Perform a search across all Restaurants."
-        type -> { !Types::Restaurant }
+        type -> { Types::Restaurant }
 
         argument :name, types.String
         argument :borough, Types::RestaurantBoroughEnum
