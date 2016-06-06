@@ -13,6 +13,7 @@ module Graph
       field :street,          types.String,   "The street name of the Restaurant."
       field :zipcode,         types.String,   "The zip code of the Restaurant."
       field :cuisine,         types.String,   "The cuisine of the Restaurant."
+      field :grade,           types.String,   "The latest grade of an inspection for the Restaurant."
       field :borough,         RestaurantBoroughEnum
 
       connection :inspections, -> { Types::Inspection.connection_type } do
