@@ -21,6 +21,14 @@ module Graph
       field :zipcode,         types.String,   "The zip code of the Restaurant."
       field :cuisine,         types.String,   "The cuisine of the Restaurant."
       field :borough,         RestaurantBoroughEnum
+
+      connection :inspections, -> { Types::Inspection.connection_type } do
+        description "List the inspections of the Restaurant."
+
+        resolve -> (object, arguments, context) do
+          object.inspections
+        end
+      end
     end
   end
 end
