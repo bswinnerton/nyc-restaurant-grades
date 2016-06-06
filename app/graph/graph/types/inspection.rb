@@ -15,7 +15,7 @@ module Graph
       field :inspectedAt,             !types.String,  property: :inspected_at
       field :gradedAt,                types.String,   property: :graded_at
 
-      field :restaurant, !Types::Restaurant do
+      field :restaurant, -> { !Types::Restaurant } do
         resolve -> (object, arguments, context) do
           object.restaurant
         end
