@@ -13,7 +13,6 @@ module Graph
         description "Perform a search across all Restaurants."
 
         argument :name, types.String
-        argument :borough, Types::RestaurantBoroughEnum
 
         resolve -> (object, arguments, context) do
           ::Restaurant.find_by(name: arguments['name'])
