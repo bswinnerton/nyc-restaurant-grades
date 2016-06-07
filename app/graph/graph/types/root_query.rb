@@ -36,6 +36,8 @@ module Graph
             ::Restaurant.where(name: name)
           elsif borough
             ::Restaurant.where(borough: borough)
+          else
+            ::Restaurant.all
           end
         end
       end
