@@ -1,8 +1,8 @@
 module Graph
   module Types
     Inspection = GraphQL::ObjectType.define do
-      name "Inspection"
-      description "A NYC health inspection."
+      name 'Inspection'
+      description 'A NYC health inspection.'
 
       interfaces [NodeIdentification.interface]
       global_id_field :id
