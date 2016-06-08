@@ -21,7 +21,7 @@ module Graph
         description 'List the inspections.'
 
         resolve -> (object, arguments, context) do
-          object.inspections
+          object.inspections.order(inspected_at: :desc)
         end
       end
     end
