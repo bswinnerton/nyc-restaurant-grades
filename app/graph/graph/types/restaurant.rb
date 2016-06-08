@@ -12,6 +12,7 @@ module Graph
       field :buildingNumber,  types.String,   'The street number.', property: :building_number
       field :street,          types.String,   'The street name.'
       field :zipcode,         types.String,   'The zip code.'
+      field :phoneNumber,     types.String,   'The phone number.', property: :phone_number
       field :cuisine,         types.String,   'The cuisine.'
       field :grade,           types.String,   'The latest grade of an inspection.'
       field :borough,         -> { RestaurantBoroughEnum }
