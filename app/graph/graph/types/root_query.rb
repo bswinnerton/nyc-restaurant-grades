@@ -41,6 +41,23 @@ module Graph
           end
         end
       end
+
+      connection :inspections, -> { !Types::Inspection.connection_type } do
+        description "Perform a search across all Inspections."
+        type -> { Types::Inspection }
+
+        argument :grade, types.String
+
+        resolve -> (object, arguments, context) do
+          grade = arguments['grade']
+
+          if grade
+            ::Inspection.includes(:restaurant).where(grade: grade)
+          else
+            ::Inspection.includes(:restaurant).all
+          end
+        end
+      end
     end
   end
 end
