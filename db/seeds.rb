@@ -33,28 +33,28 @@ while not_broken
     parsed_response = JSON.parse(response)
 
     parsed_response.each do |restaurant_data|
-      camis           = restaurant_data['camis']
-      inspection_date = restaurant_data['inspection_date'].to_datetime
-
       ActiveRecord::Base.transaction do
         next unless restaurant_data['dba']
 
-        restaurant = Restaurant.find_or_create_by(camis: camis) do |r|
+        restaurant = Restaurant.find_or_create_by(camis: restaurant_data['camis']) do |r|
           r.name             = restaurant_data['dba'].titleize
           r.building_number  = restaurant_data['building']
           r.street           = restaurant_data['street'].titleize
           r.zipcode          = restaurant_data['zipcode']
           r.borough          = Restaurant.boroughs[restaurant_data['boro']]
+          r.phone_number     = restaurant_data['phone']
         end
 
-        Inspection.find_or_create_by(restaurant_id: restaurant.id, inspected_at: inspection_date) do |i|
-          i.type                  = restaurant_data['inspection_type']
-          i.graded_at             = restaurant_data['grade_date']
-          i.score                 = restaurant_data['score']
-          i.violation_description = restaurant_data['violation_description']
-          i.violation_code        = restaurant_data['violation_code']
-          i.grade                 = restaurant_data['grade']
-        end
+        Inspection.create(
+          restaurant:             restaurant,
+          type:                   restaurant_data['inspection_type'],
+          inspected_at:           restaurant_data['inspection_date'].to_datetime,
+          graded_at:              restaurant_data['grade_date'],
+          score:                  restaurant_data['score'],
+          violation_description:  restaurant_data['violation_description'],
+          violation_code:         restaurant_data['violation_code'],
+          grade:                  restaurant_data['grade']
+        )
       end
     end
 
