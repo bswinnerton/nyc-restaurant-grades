@@ -6,7 +6,7 @@ module Graph
       name 'RootQuery'
       description 'The query root.'
 
-      field :node, :field => Types::NodeIdentification.field
+      field :node, :field => NodeIdentification.field
 
       field :restaurant do
         type -> { Types::Restaurant }
