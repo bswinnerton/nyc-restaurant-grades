@@ -3,14 +3,14 @@ require 'graph/enum/restaurant_borough_enum'
 module Graph
   module Types
     RootQuery = GraphQL::ObjectType.define do
-      name "RootQuery"
-      description "The query root."
+      name 'RootQuery'
+      description 'The query root.'
 
       field :node, :field => Types::NodeIdentification.field
 
       field :restaurant do
         type -> { Types::Restaurant }
-        description "Perform a search for one restaurant."
+        description 'Perform a search for one restaurant.'
 
         argument :name, types.String
 
@@ -20,7 +20,7 @@ module Graph
       end
 
       connection :restaurants, -> { !Types::Restaurant.connection_type } do
-        description "Perform a search across all Restaurants."
+        description 'Perform a search across all Restaurants.'
         type -> { Types::Restaurant }
 
         argument :name, types.String
@@ -43,7 +43,7 @@ module Graph
       end
 
       connection :inspections, -> { !Types::Inspection.connection_type } do
-        description "Perform a search across all Inspections."
+        description 'Perform a search across all Inspections.'
         type -> { Types::Inspection }
 
         argument :grade, types.String
