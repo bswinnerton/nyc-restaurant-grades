@@ -10,7 +10,7 @@ module Graph
 
       field :restaurant do
         type -> { Types::Restaurant }
-        description "Perform a search across all Restaurants."
+        description "Perform a search for one restaurant."
 
         argument :name, types.String
 
