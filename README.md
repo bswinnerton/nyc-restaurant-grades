@@ -1,5 +1,11 @@
 # NYC Restaurant Grades via GraphQL
 
+This application was
+[presented](https://speakerdeck.com/bswinnerton/graphql-for-rubyists) at the
+Ruby Roundtable Meetup in New York City in June of 2016.
+
+--
+
 This application allows you to query the [NYC Restaurant Inspection
 Results](https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/xx67-kt59/about)
 data (letter ratings for restaurants) via a GraphQL interface.
