@@ -16,26 +16,20 @@ following on the left hand side of GraphiQL:
 
 ```graphql
 query {
-  restaurants(name:"Wendy's", borough:BROOKLYN) {
-    edges {
-      node {
-        name
-        buildingNumber
-        street
-        zipcode
-        borough
-        cuisine
-        inspections {
-          edges {
-            node {
-              grade
-              violations {
-                edges {
-                  node {
-                    description
-                  }
-                }
-              }
+  restaurants(name:"Wendy's", borough:BROOKLYN, last:10) {
+    nodes {
+      name
+      buildingNumber
+      street
+      zipcode
+      borough
+      cuisine
+      inspections {
+        nodes {
+          grade
+          violations {
+            nodes {
+              description
             }
           }
         }
