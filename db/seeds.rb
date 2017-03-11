@@ -37,12 +37,13 @@ while not_broken
         next unless restaurant_data['dba']
 
         restaurant = Restaurant.find_or_create_by(camis: restaurant_data['camis']) do |r|
-          r.name             = restaurant_data['dba'].titleize
-          r.building_number  = restaurant_data['building']
-          r.street           = restaurant_data['street'].titleize
-          r.zipcode          = restaurant_data['zipcode']
-          r.borough          = Restaurant.boroughs[restaurant_data['boro']]
-          r.phone_number     = restaurant_data['phone']
+          r.name            = restaurant_data['dba'].titleize
+          r.building_number = restaurant_data['building']
+          r.street          = restaurant_data['street'].titleize
+          r.zipcode         = restaurant_data['zipcode']
+          r.borough         = Restaurant.boroughs[restaurant_data['boro']]
+          r.phone_number    = restaurant_data['phone']
+          r.cuisine         = restaurant_data['cuisine_description']
         end
 
         inspection_date = restaurant_data['inspection_date'].to_datetime

@@ -1,4 +1,6 @@
 class Restaurant < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   enum borough: ['BRONX', 'BROOKLYN', 'MANHATTAN', 'STATEN_ISLAND', 'QUEENS']
 
   has_many :inspections
@@ -6,6 +8,30 @@ class Restaurant < ActiveRecord::Base
   def grade
     return unless last_inspection
     last_inspection.grade
+  end
+
+  def url
+    api_v1_restaurant_url(self)
+  end
+
+  def inspections_url
+    api_v1_restaurant_inspections_url(self)
+  end
+
+  def as_json(options = {})
+    {
+      id: id,
+      name: name,
+      grade: grade,
+      camis: camis,
+      building_number: building_number,
+      street: street,
+      zipcode: zipcode,
+      borough: borough,
+      cuisine: cuisine,
+      url: url,
+      inspections_url: inspections_url,
+    }
   end
 
   private
