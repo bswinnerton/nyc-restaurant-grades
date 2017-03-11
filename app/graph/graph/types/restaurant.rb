@@ -17,20 +17,9 @@ module Graph
         description 'The unique identifier.'
       end
 
-      field :buildingNumber do
+      field :address do
         type types.String
-        description 'The street number.'
-        property :building_number
-      end
-
-      field :street do
-        type types.String
-        description 'The street name.'
-      end
-
-      field :zipcode do
-        type types.String
-        description 'The zip code.'
+        description 'The address of the restaurant.'
       end
 
       field :phoneNumber do

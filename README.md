@@ -19,10 +19,7 @@ query {
   restaurants(name:"Wendy's", borough:BROOKLYN, last:10) {
     nodes {
       name
-      buildingNumber
-      street
-      zipcode
-      borough
+      address
       cuisine
       inspections {
         nodes {

@@ -5,6 +5,10 @@ class Restaurant < ActiveRecord::Base
 
   has_many :inspections
 
+  def address
+    "#{building_number} #{street}, #{borough.humanize}, New York #{zipcode}"
+  end
+
   def grade
     return unless last_inspection
     last_inspection.grade
@@ -24,10 +28,7 @@ class Restaurant < ActiveRecord::Base
       name: name,
       grade: grade,
       camis: camis,
-      building_number: building_number,
-      street: street,
-      zipcode: zipcode,
-      borough: borough,
+      address: address,
       cuisine: cuisine,
       url: url,
       inspections_url: inspections_url,
