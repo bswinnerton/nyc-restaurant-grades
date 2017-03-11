@@ -46,6 +46,7 @@ group :development do
   gem 'spring'
 end
 
+gem 'puma'
 gem 'rest-client'
 gem 'pry-rails'
 gem 'rails_12factor'

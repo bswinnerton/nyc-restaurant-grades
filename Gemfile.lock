@@ -91,6 +91,7 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.5)
       pry (>= 0.9.10)
+    puma (2.15.3)
     rack (1.6.5)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -180,6 +181,7 @@ DEPENDENCIES
   jquery-rails
   pg (~> 0.15)
   pry-rails
+  puma
   rails (= 4.2.8)
   rails_12factor
   rest-client
