@@ -1,4 +1,7 @@
 module Graph
+  # Allow for connection.nodes shorthand
+  GraphQL::Relay::ConnectionType.default_nodes_field = true
+
   Schema = GraphQL::Schema.define do
     query Graph::Types::RootQuery
 

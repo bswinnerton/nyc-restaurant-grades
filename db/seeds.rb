@@ -45,15 +45,19 @@ while not_broken
           r.phone_number     = restaurant_data['phone']
         end
 
-        Inspection.create(
-          restaurant:             restaurant,
-          type:                   restaurant_data['inspection_type'],
-          inspected_at:           restaurant_data['inspection_date'].to_datetime,
-          graded_at:              restaurant_data['grade_date'],
-          score:                  restaurant_data['score'],
-          violation_description:  restaurant_data['violation_description'],
-          violation_code:         restaurant_data['violation_code'],
-          grade:                  restaurant_data['grade']
+        inspection_date = restaurant_data['inspection_date'].to_datetime
+
+        inspection = Inspection.find_or_create_by(restaurant: restaurant, inspected_at: inspection_date) do |i|
+          i.type      = restaurant_data['inspection_type']
+          i.graded_at = restaurant_data['grade_date']
+          i.score     = restaurant_data['score']
+          i.grade     = restaurant_data['grade']
+        end
+
+        Violation.create(
+          inspection: inspection,
+          description: restaurant_data['violation_description'],
+          code: restaurant_data['violation_code'],
         )
       end
     end

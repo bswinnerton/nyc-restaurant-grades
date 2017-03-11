@@ -12,18 +12,6 @@ module Graph
         description 'The type of inspection.'
       end
 
-      field :violationDescription do
-        type types.String
-        description 'The description of the violation.'
-        property :violation_description
-      end
-
-      field :violationCode do
-        type types.String
-        description 'The violation code cited.'
-        property :violation_code
-      end
-
       field :grade do
         type types.String
         description 'The grade received.'
@@ -52,6 +40,15 @@ module Graph
 
         resolve -> (object, arguments, context) do
           object.restaurant
+        end
+      end
+
+      connection :violations do
+        type -> { !Types::Violation.connection_type }
+        description 'The violations received in the inspection'
+
+        resolve -> (object, arguments, context) do
+          object.violations
         end
       end
     end

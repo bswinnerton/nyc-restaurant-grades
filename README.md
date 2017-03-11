@@ -28,7 +28,14 @@ query {
         inspections {
           edges {
             node {
-              violationDescription
+              grade
+              violations {
+                edges {
+                  node {
+                    description
+                  }
+                }
+              }
             }
           }
         }
