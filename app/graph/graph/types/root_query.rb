@@ -6,7 +6,7 @@ module Graph
       name 'RootQuery'
       description 'The query root.'
 
-      field :node, :field => NodeIdentification.field
+      field :node, GraphQL::Relay::Node.field
 
       field :restaurant do
         type -> { Types::Restaurant }
@@ -19,9 +19,9 @@ module Graph
         end
       end
 
-      connection :restaurants, -> { !Types::Restaurant.connection_type } do
+      connection :restaurants do
+        type -> { !Types::Restaurant.connection_type }
         description 'Perform a search across all Restaurants.'
-        type -> { Types::Restaurant }
 
         argument :name, types.String
         argument :borough, Types::RestaurantBoroughEnum
