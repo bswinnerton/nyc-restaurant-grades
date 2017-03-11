@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160608204459) do
+ActiveRecord::Schema.define(version: 20170311163627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,11 +22,9 @@ ActiveRecord::Schema.define(version: 20160608204459) do
     t.datetime "inspected_at"
     t.datetime "graded_at"
     t.integer  "score"
-    t.text     "violation_description"
-    t.text     "violation_code"
     t.text     "grade"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "restaurants", force: :cascade do |t|
@@ -40,6 +38,14 @@ ActiveRecord::Schema.define(version: 20160608204459) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.text     "phone_number"
+  end
+
+  create_table "violations", force: :cascade do |t|
+    t.text     "description"
+    t.text     "code"
+    t.integer  "inspection_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
 end
