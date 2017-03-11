@@ -55,11 +55,16 @@ while not_broken
           i.grade     = restaurant_data['grade']
         end
 
-        Violation.create(
-          inspection: inspection,
-          description: restaurant_data['violation_description'],
-          code: restaurant_data['violation_code'],
-        )
+        violation_description = restaurant_data['violation_description']
+        violation_code        = restaurant_data['violation_code']
+
+        if violation_description || violation_code
+          Violation.create(
+            inspection: inspection,
+            description: violation_description,
+            code: violation_code,
+          )
+        end
       end
     end
 
