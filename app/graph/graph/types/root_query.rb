@@ -16,10 +16,14 @@ module Graph
         argument :borough, Types::RestaurantBoroughEnum
 
         resolve -> (object, arguments, context) do
-          name    = arguments['name']
-          borough = ::Restaurant.boroughs[arguments['borough']]
+          name = arguments['name']
 
-          ::Restaurant.find_by(name: name, borough: borough)
+          if arguments['borough']
+            borough = ::Restaurant.boroughs[arguments['borough']]
+            ::Restaurant.find_by(name: name, borough: borough)
+          else
+            ::Restaurant.find_by(name: name)
+          end
         end
       end
 
