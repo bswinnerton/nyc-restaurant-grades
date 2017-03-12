@@ -59,7 +59,7 @@ while not_broken
         violation_code        = restaurant_data['violation_code']
 
         if violation_description || violation_code
-          Violation.find_or_create_by(inspection: inspection, code: code) do |v|
+          Violation.find_or_create_by(inspection: inspection, code: violation_code) do |v|
             v.description = violation_description
           end
         end
