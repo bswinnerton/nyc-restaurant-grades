@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170311163627) do
+ActiveRecord::Schema.define(version: 20170312170343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20170311163627) do
     t.datetime "updated_at",    null: false
   end
 
+  add_index "inspections", ["restaurant_id", "inspected_at"], name: "index_inspections_on_restaurant_id_and_inspected_at", unique: true, using: :btree
+
   create_table "restaurants", force: :cascade do |t|
     t.text     "name"
     t.text     "camis"
@@ -40,6 +42,8 @@ ActiveRecord::Schema.define(version: 20170311163627) do
     t.text     "phone_number"
   end
 
+  add_index "restaurants", ["camis"], name: "index_restaurants_on_camis", unique: true, using: :btree
+
   create_table "violations", force: :cascade do |t|
     t.text     "description"
     t.text     "code"
@@ -47,5 +51,7 @@ ActiveRecord::Schema.define(version: 20170311163627) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
+
+  add_index "violations", ["inspection_id", "code"], name: "index_violations_on_inspection_id_and_code", unique: true, using: :btree
 
 end

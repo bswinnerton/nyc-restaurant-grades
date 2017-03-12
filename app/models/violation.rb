@@ -4,6 +4,9 @@ class Violation < ActiveRecord::Base
   belongs_to :inspection
   has_one :restaurant, through: :inspection
 
+  validates :inspection_id, presence: true
+  #validates :code, uniqueness: { scope: :inspection_id }
+
   def url
     api_v1_restaurant_inspection_violation_url(restaurant, inspection, self)
   end
