@@ -41,7 +41,7 @@ while not_broken
           r.building_number = restaurant_data['building']
           r.street          = restaurant_data['street'].titleize
           r.zipcode         = restaurant_data['zipcode']
-          r.borough         = Restaurant.boroughs[restaurant_data['boro']]
+          r.borough         = Restaurant.boroughs[restaurant_data['boro'].parameterize.underscore.upcase]
           r.phone_number    = restaurant_data['phone']
           r.cuisine         = restaurant_data['cuisine_description']
         end
