@@ -5,6 +5,9 @@ module Graph
   Schema = GraphQL::Schema.define do
     query Graph::Types::RootQuery
 
+    lazy_resolve(Promise, :sync)
+    instrument(:query, GraphQL::Batch::Setup)
+
     object_from_id -> (id, context) do
       type_name, database_id = GraphQL::Schema::UniqueWithinType.decode(id)
       type_name.constantize.find(database_id)

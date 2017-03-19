@@ -46,8 +46,9 @@ module Graph
         type -> { Types::Inspection.connection_type }
         description 'List the inspections.'
 
-        resolve -> (object, arguments, context) do
-          object.inspections.order(inspected_at: :desc)
+        resolve -> (restaurant, arguments, context) do
+          #TODO: Use order(inspected_at: :desc)
+          Loaders::ForeignKeyLoader.for(::Inspection, :restaurant_id).load([restaurant.id])
         end
       end
     end
