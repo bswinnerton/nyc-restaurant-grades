@@ -48,7 +48,7 @@ module Graph
         description 'The violations received in the inspection'
 
         resolve -> (inspection, arguments, context) do
-          Loaders::ForeignKeyLoader.for(::Violation, :inspection_id).load([inspection.id])
+          Loaders::ForeignKeyLoader.for(::Violation, :inspection_id).load(inspection.id)
         end
       end
     end

@@ -48,7 +48,7 @@ module Graph
 
         resolve -> (restaurant, arguments, context) do
           #TODO: Use order(inspected_at: :desc)
-          Loaders::ForeignKeyLoader.for(::Inspection, :restaurant_id).load([restaurant.id])
+          Loaders::ForeignKeyLoader.for(::Inspection, :restaurant_id).load(restaurant.id)
         end
       end
     end

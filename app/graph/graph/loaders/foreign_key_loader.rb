@@ -6,22 +6,21 @@ module Graph
         @foreign_key  = foreign_key
       end
 
-      def perform(foreign_id_sets)
-        foreign_ids = foreign_id_sets.flatten.uniq
-        records = model.where(foreign_key => foreign_ids).to_a
+      def perform(foreign_ids)
+        records = model.where(foreign_key => foreign_ids.uniq).to_a
 
-        foreign_id_sets.each do |foreign_id_set|
+        foreign_ids.each do |foreign_id|
           matching_records = records.select do |record|
-            foreign_id_set.include?(record.send(foreign_key))
+            record.send(foreign_key) == foreign_id
           end
 
-          fulfill(foreign_id_set, matching_records)
+          fulfill(foreign_id, matching_records)
         end
       end
 
       private
 
-      attr_reader :model, :foreign_key, :opts
+      attr_reader :model, :foreign_key
     end
   end
 end
