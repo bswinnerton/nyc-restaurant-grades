@@ -8,6 +8,8 @@ module Graph
     lazy_resolve(Promise, :sync)
     instrument(:query, GraphQL::Batch::Setup)
 
+    default_max_page_size 50
+
     object_from_id -> (id, context) do
       type_name, database_id = GraphQL::Schema::UniqueWithinType.decode(id)
       type_name.constantize.find(database_id)
