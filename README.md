@@ -5,7 +5,7 @@ Results](https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Ins
 data (letter ratings for restaurants) via a GraphQL interface.
 
 For example, to query all of the Wendy's in Brooklyn and get a list of their
-health violations, visit http://nyc-restaurant-grades.com and enter the
+health violations, visit http://nyc-restaurant-grades.com/graphql and enter the
 following on the left hand side of GraphiQL:
 
 ```graphql
