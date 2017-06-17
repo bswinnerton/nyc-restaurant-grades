@@ -1,6 +1,8 @@
 class Violation < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
+  MAX_COUNT = 30
+
   belongs_to :inspection
   has_one :restaurant, through: :inspection
 

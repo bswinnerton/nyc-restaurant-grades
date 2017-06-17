@@ -1,6 +1,8 @@
 class Restaurant < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
+  MAX_COUNT = 30
+
   enum borough: ['BRONX', 'BROOKLYN', 'MANHATTAN', 'STATEN_ISLAND', 'QUEENS']
 
   has_many :inspections

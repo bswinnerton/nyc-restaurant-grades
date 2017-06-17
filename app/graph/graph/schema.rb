@@ -8,7 +8,7 @@ module Graph
     lazy_resolve(Promise, :sync)
     instrument(:query, GraphQL::Batch::Setup)
 
-    default_max_page_size 50
+    default_max_page_size [Restaurant::MAX_COUNT, Violation::MAX_COUNT, Inspection::MAX_COUNT].min
 
     object_from_id -> (id, context) do
       type_name, database_id = GraphQL::Schema::UniqueWithinType.decode(id)
