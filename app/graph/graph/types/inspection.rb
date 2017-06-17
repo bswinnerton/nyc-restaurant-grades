@@ -39,7 +39,7 @@ module Graph
         description 'The restaurant associated with the inspection.'
 
         resolve -> (object, arguments, context) do
-          object.restaurant
+          Loaders::RecordLoader.for(::Restaurant).load(object.restaurant_id)
         end
       end
 
@@ -47,8 +47,8 @@ module Graph
         type -> { !Types::Violation.connection_type }
         description 'The violations received in the inspection'
 
-        resolve -> (object, arguments, context) do
-          object.violations
+        resolve -> (inspection, arguments, context) do
+          Loaders::ForeignKeyLoader.for(::Violation, :inspection_id).load(inspection.id)
         end
       end
     end
