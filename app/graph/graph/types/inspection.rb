@@ -53,7 +53,7 @@ module Graph
       end
 
       connection :paginatedViolations do
-        type -> { !Types::Violation.connection_type }
+        type -> { !Connections::Violations }
         description 'The violations received in the inspection as a Relay connection.'
 
         resolve -> (inspection, arguments, context) do

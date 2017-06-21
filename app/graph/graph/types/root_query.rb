@@ -53,7 +53,7 @@ module Graph
       end
 
       connection :paginatedRestaurants do
-        type -> { !Types::Restaurant.connection_type }
+        type -> { !Connections::Restaurants }
         description 'Perform a search across all Restaurants and return a Relay connection.'
 
         argument :name, types.String
@@ -95,7 +95,7 @@ module Graph
       end
 
       connection :paginatedInspections do
-        type -> { !Types::Inspection.connection_type }
+        type -> { !Connections::Inspections }
         description 'Perform a search across all Inspections.'
 
         argument :grade, types.String
