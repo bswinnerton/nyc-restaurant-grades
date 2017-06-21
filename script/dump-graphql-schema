@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+require File.expand_path('../../config/environment',  __FILE__)
+
+schema = GraphQL::Schema::Printer.print_schema(Graph::Schema)
+File.write('config/schema.graphql', "#{schema.chomp}\n")

@@ -1,0 +1,256 @@
+schema {
+  query: RootQuery
+}
+
+# A NYC health inspection.
+type Inspection implements Node {
+  id: ID!
+
+  # The type of inspection.
+  type: String
+
+  # The grade received.
+  grade: String
+
+  # The numeric score received.
+  score: Int
+
+  # The timestamp of the inspection.
+  inspectedAt: String!
+
+  # The timestamp of when the grade was received.
+  gradedAt: String
+
+  # The restaurant associated with the inspection.
+  restaurant: Restaurant!
+
+  # The violations received in the inspection.
+  violations: [Violation]
+
+  # The violations received in the inspection as a Relay connection.
+  paginatedViolations(
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the elements in the list that come after the specified global ID.
+    after: String
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+
+    # Returns the elements in the list that come before the specified global ID.
+    before: String
+  ): ViolationsConnection!
+}
+
+# An edge in a connection.
+type InspectionEdge {
+  # The item at the end of the edge.
+  node: Inspection
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+# The connection type for Inspection.
+type InspectionsConnection {
+  # A list of edges.
+  edges: [InspectionEdge]
+
+  # A list of nodes.
+  nodes: [Inspection]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An object with an ID.
+interface Node {
+  # ID of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+# A place of business serving food in New York City
+type Restaurant implements Node {
+  id: ID!
+
+  # The doing-business-as value.
+  name: String!
+
+  # The unique identifier.
+  camis: String!
+
+  # The address of the restaurant.
+  address: String
+
+  # The phone number.
+  phoneNumber: String
+
+  # The cuisine.
+  cuisine: String
+
+  # The latest grade of an inspection.
+  grade: String
+  borough: RestaurantBorough
+
+  # List the inspections.
+  inspections: [Inspection]
+
+  # The inspections of the restaurant as a Relay connection.
+  paginatedInspections(
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the elements in the list that come after the specified global ID.
+    after: String
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+
+    # Returns the elements in the list that come before the specified global ID.
+    before: String
+  ): InspectionsConnection
+}
+
+# The borough in which the Restaurant resides.
+enum RestaurantBorough {
+  # Bronx
+  BRONX
+
+  # Brooklyn
+  BROOKLYN
+
+  # Manhattan
+  MANHATTAN
+
+  # Staten Island
+  STATEN_ISLAND
+
+  # Queens
+  QUEENS
+}
+
+# An edge in a connection.
+type RestaurantEdge {
+  # The item at the end of the edge.
+  node: Restaurant
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+# The connection type for Restaurant.
+type RestaurantsConnection {
+  # A list of edges.
+  edges: [RestaurantEdge]
+
+  # A list of nodes.
+  nodes: [Restaurant]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# The query root.
+type RootQuery {
+  # Fetches an object given its ID.
+  node(
+    # ID of the object.
+    id: ID!
+  ): Node
+
+  # Perform a search for one restaurant.
+  restaurant(name: String, borough: RestaurantBorough): Restaurant
+
+  # Perform a search across all Restaurants.
+  restaurants(name: String, borough: RestaurantBorough): [Restaurant]!
+
+  # Perform a search across all Restaurants and return a Relay connection.
+  paginatedRestaurants(
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the elements in the list that come after the specified global ID.
+    after: String
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+
+    # Returns the elements in the list that come before the specified global ID.
+    before: String
+    name: String
+    borough: RestaurantBorough
+  ): RestaurantsConnection!
+
+  # Perform a search across all Inspections.
+  inspections(grade: String): [Inspection]!
+
+  # Perform a search across all Inspections.
+  paginatedInspections(
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the elements in the list that come after the specified global ID.
+    after: String
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+
+    # Returns the elements in the list that come before the specified global ID.
+    before: String
+    grade: String
+  ): InspectionsConnection!
+}
+
+# A NYC health inspection violation.
+type Violation implements Node {
+  id: ID!
+
+  # The description of the violation.
+  description: String
+
+  # The violation code cited.
+  code: String
+
+  # The inspection this violation was a part of.
+  inspection: Inspection
+}
+
+# An edge in a connection.
+type ViolationEdge {
+  # The item at the end of the edge.
+  node: Violation
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+# The connection type for Violation.
+type ViolationsConnection {
+  # A list of edges.
+  edges: [ViolationEdge]
+
+  # A list of nodes.
+  nodes: [Violation]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
