@@ -27,8 +27,8 @@ module Graph
         end
       end
 
-      connection :restaurants do
-        type -> { !Types::Restaurant.connection_type }
+      field :restaurants do
+        type -> { !types[Types::Restaurant] }
         description 'Perform a search across all Restaurants.'
 
         argument :name, types.String
@@ -50,9 +50,49 @@ module Graph
         end
       end
 
-      connection :inspections, -> { !Types::Inspection.connection_type } do
+      connection :paginatedRestaurants do
+        type -> { !Types::Restaurant.connection_type }
+        description 'Perform a search across all Restaurants and return a Relay connection.'
+
+        argument :name, types.String
+        argument :borough, Types::RestaurantBoroughEnum
+
+        resolve -> (object, arguments, context) do
+          name    = arguments['name']
+          borough = ::Restaurant.boroughs[arguments['borough']]
+
+          if name && borough
+            ::Restaurant.where(name: name, borough: borough)
+          elsif name
+            ::Restaurant.where(name: name)
+          elsif borough
+            ::Restaurant.where(borough: borough)
+          else
+            ::Restaurant.all
+          end
+        end
+      end
+
+      field :inspections do
+        type -> { !types[Types::Inspection] }
         description 'Perform a search across all Inspections.'
-        type -> { Types::Inspection }
+
+        argument :grade, types.String
+
+        resolve -> (object, arguments, context) do
+          grade = arguments['grade']
+
+          if grade
+            ::Inspection.includes(:restaurant).where(grade: grade)
+          else
+            ::Inspection.includes(:restaurant).all
+          end
+        end
+      end
+
+      connection :paginatedInspections do
+        type -> { !Types::Inspection.connection_type }
+        description 'Perform a search across all Inspections.'
 
         argument :grade, types.String
 
