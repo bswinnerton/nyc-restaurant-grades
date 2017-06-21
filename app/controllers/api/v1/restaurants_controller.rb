@@ -1,6 +1,6 @@
 class Api::V1::RestaurantsController < ApplicationController
   def index
-    restaurants = Restaurant.first(30)
+    restaurants = Restaurant.limit(Restaurant::MAX_COUNT)
     render json: restaurants
   end
 

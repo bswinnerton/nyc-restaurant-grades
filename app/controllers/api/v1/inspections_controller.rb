@@ -1,7 +1,7 @@
 class Api::V1::InspectionsController < ApplicationController
   def index
     restaurant  = Restaurant.find(params[:restaurant_id])
-    inspections = restaurant.inspections.first(30)
+    inspections = restaurant.inspections.limit(Inspection::MAX_COUNT)
     render json: inspections
   end
 
