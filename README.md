@@ -10,20 +10,14 @@ following on the left hand side of GraphiQL:
 
 ```graphql
 query {
-  restaurants(name:"Wendy's", borough:BROOKLYN, last:10) {
-    nodes {
-      name
-      address
-      cuisine
-      inspections {
-        nodes {
-          grade
-          violations {
-            nodes {
-              description
-            }
-          }
-        }
+  restaurants(name: "Wendy's", borough: BROOKLYN) {
+    name
+    address
+    cuisine
+    inspections {
+      grade
+      violations {
+        description
       }
     }
   }
