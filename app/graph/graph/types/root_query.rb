@@ -38,15 +38,17 @@ module Graph
           name    = arguments['name']
           borough = ::Restaurant.boroughs[arguments['borough']]
 
-          if name && borough
-            ::Restaurant.where(name: name, borough: borough)
-          elsif name
-            ::Restaurant.where(name: name)
-          elsif borough
-            ::Restaurant.where(borough: borough)
-          else
-            ::Restaurant.all
-          end
+          scope = if name && borough
+                    ::Restaurant.where(name: name, borough: borough)
+                  elsif name
+                    ::Restaurant.where(name: name)
+                  elsif borough
+                    ::Restaurant.where(borough: borough)
+                  else
+                    ::Restaurant.all
+                  end
+
+          scope.limit(::Restaurant::MAX_COUNT)
         end
       end
 
@@ -82,11 +84,13 @@ module Graph
         resolve -> (object, arguments, context) do
           grade = arguments['grade']
 
-          if grade
-            ::Inspection.includes(:restaurant).where(grade: grade)
-          else
-            ::Inspection.includes(:restaurant).all
-          end
+          scope = if grade
+                    ::Inspection.includes(:restaurant).where(grade: grade)
+                  else
+                    ::Inspection.includes(:restaurant).all
+                  end
+
+          scope.limit(::Inspection::MAX_COUNT)
         end
       end
 

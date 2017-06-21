@@ -57,7 +57,7 @@ module Graph
         description 'The violations received in the inspection as a Relay connection.'
 
         resolve -> (inspection, arguments, context) do
-          Loaders::ForeignKeyLoader.for(::Violation, :inspection_id).load(inspection.id)
+          Loaders::RelayForeignKeyLoader.for(::Violation, :inspection_id).load(inspection.id)
         end
       end
     end
