@@ -43,12 +43,21 @@ module Graph
         end
       end
 
-      connection :violations do
-        type -> { !Types::Violation.connection_type }
-        description 'The violations received in the inspection'
+      field :violations do
+        type -> { types[Types::Violation] }
+        description 'The violations received in the inspection.'
 
         resolve -> (inspection, arguments, context) do
           Loaders::ForeignKeyLoader.for(::Violation, :inspection_id).load(inspection.id)
+        end
+      end
+
+      connection :paginatedViolations do
+        type -> { !Connections::Violations }
+        description 'The violations received in the inspection as a Relay connection.'
+
+        resolve -> (inspection, arguments, context) do
+          Loaders::RelayForeignKeyLoader.for(::Violation, :inspection_id).load(inspection.id)
         end
       end
     end

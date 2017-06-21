@@ -42,13 +42,23 @@ module Graph
         type -> { RestaurantBoroughEnum }
       end
 
-      connection :inspections do
-        type -> { Types::Inspection.connection_type }
+      field :inspections do
+        type -> { types[Types::Inspection] }
         description 'List the inspections.'
 
         resolve -> (restaurant, arguments, context) do
           #TODO: Use order(inspected_at: :desc)
           Loaders::ForeignKeyLoader.for(::Inspection, :restaurant_id).load(restaurant.id)
+        end
+      end
+
+      connection :paginatedInspections do
+        type -> { Connections::Inspections }
+        description 'The inspections of the restaurant as a Relay connection.'
+
+        resolve -> (restaurant, arguments, context) do
+          #TODO: Use order(inspected_at: :desc)
+          Loaders::RelayForeignKeyLoader.for(::Inspection, :restaurant_id).load(restaurant.id)
         end
       end
     end
