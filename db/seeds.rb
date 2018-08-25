@@ -103,12 +103,8 @@ while !broken
   end
 end
 
-restaurants = restaurants.uniq
-inspections = inspections.uniq
-violations  = violations.uniq
-
 Rails.logger.info "Importing Restaurants..."
-Restaurant.import(restaurants, on_duplicate_key_ignore: { conflict_target: [:camis], columns: [:updated_at] })
+Restaurant.import(restaurants, batch_size: 50000, on_duplicate_key_ignore: { conflict_target: [:camis], columns: [:updated_at] })
 
 Rails.logger.info "Caching Restaurants..."
 persisted_restaurants = Restaurant.all.group_by(&:camis)
@@ -121,7 +117,7 @@ inspections = inspections.map do |inspection|
 end
 
 Rails.logger.info "Importing Inspections..."
-Inspection.import(inspections, on_duplicate_key_ignore: true)
+Inspection.import(inspections, batch_size: 50000, on_duplicate_key_ignore: true)
 
 Rails.logger.info "Caching Inspections..."
 persisted_inspections = Inspection.all.group_by(&:restaurant_id)
@@ -140,4 +136,4 @@ violations = violations.map do |violation|
 end
 
 Rails.logger.info "Importing Violations..."
-Violation.import(violations, on_duplicate_key_ignore: true)
+Violation.import(violations, batch_size: 50000, on_duplicate_key_ignore: true)
