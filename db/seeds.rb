@@ -1,3 +1,5 @@
+$stdout.sync = true
+
 class DataSet
   ORDER = :id.freeze
   LIMIT = 50000.freeze
