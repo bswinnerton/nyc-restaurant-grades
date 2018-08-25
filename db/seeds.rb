@@ -96,6 +96,10 @@ while !broken
     end
 
     dataset.page += 1
+
+    restaurants = restaurants.uniq
+    inspections = inspections.uniq
+    violations  = violations.uniq
   rescue Exception => exception
     Rails.logger.info "Fetching failed at page #{dataset.page}"
     Rails.logger.fatal exception
