@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
   db:
@@ -43,5 +43,6 @@ volumes:
 
 networks:
   backend:
+    name: nyc-restaurant-grades-backend
   web:
     external: true
