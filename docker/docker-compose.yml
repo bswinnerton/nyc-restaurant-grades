@@ -28,8 +28,15 @@ services:
       dockerfile: ./docker/nginx/Dockerfile
     depends_on:
       - rails
+    networks:
+      - web
     ports:
       - 3001:80
 
 volumes:
   db_data:
+
+networks:
+  web:
+    external: true
+
