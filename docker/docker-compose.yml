@@ -4,7 +4,7 @@ services:
   db:
     image: postgres
     volumes:
-      - ../tmp/db:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
   rails:
     build:
       context: ../
@@ -21,3 +21,6 @@ services:
       - rails
     ports:
       - 3001:80
+
+volumes:
+  db_data:
