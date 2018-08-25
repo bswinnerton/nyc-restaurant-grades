@@ -1,4 +1,4 @@
-class Violation < ActiveRecord::Base
+class Violation < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   MAX_COUNT = 30

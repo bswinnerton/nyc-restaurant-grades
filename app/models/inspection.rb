@@ -1,4 +1,4 @@
-class Inspection < ActiveRecord::Base
+class Inspection < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   MAX_COUNT = 30
