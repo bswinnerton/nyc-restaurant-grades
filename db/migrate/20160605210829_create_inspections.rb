@@ -1,4 +1,4 @@
-class CreateInspections < ActiveRecord::Migration
+class CreateInspections < ActiveRecord::Migration[4.2]
   def change
     create_table :inspections do |t|
       t.integer :restaurant_id
