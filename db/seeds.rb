@@ -35,7 +35,7 @@ restaurants = []
 inspections = []
 violations  = []
 
-Rails.logger.info "Starting import of NYC OpenData dataset"
+Rails.logger.info "Starting import of NYC OpenData dataset..."
 
 while !broken
   begin
@@ -45,7 +45,7 @@ while !broken
     parsed_response = JSON.parse(response)
 
     if parsed_response.empty?
-      Rails.logger.info "Fetched all pages"
+      Rails.logger.info "Fetched all pages."
       break
     end
 
@@ -107,7 +107,7 @@ while !broken
     inspections = inspections.uniq
     violations  = violations.uniq
   rescue Exception => exception
-    Rails.logger.info "Fetching failed at page #{dataset.page}"
+    Rails.logger.info "Fetching failed at page #{dataset.page}."
     Rails.logger.fatal exception
     broken = true
   end
@@ -148,7 +148,7 @@ end
 Rails.logger.info "Importing Violations..."
 Violation.import(violations, batch_size: 50000, on_duplicate_key_ignore: true)
 
-Rails.logger.info "Import of NYC OpenData dataset complete"
+Rails.logger.info "Import of NYC OpenData dataset complete."
 
 # Reset logger to what it was before this script began
 ActiveRecord::Base.logger.level = old_active_record_log_level
