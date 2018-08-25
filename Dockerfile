@@ -12,11 +12,10 @@ COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 RUN bundle install --jobs 20 --retry 5
 
-# Precompile assets
-RUN bundle exec rails assets:precompile
-
-
 # Adding project files
 COPY . .
+
+# Precompile assets
+RUN bundle exec rails assets:precompile
 
 CMD [ "bundle", "exec", "puma", "-C", "config/puma.rb" ]
