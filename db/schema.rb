@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,47 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312170343) do
+ActiveRecord::Schema.define(version: 2017_03_12_170343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "inspections", force: :cascade do |t|
-    t.integer  "restaurant_id"
-    t.text     "type"
+  create_table "inspections", id: :serial, force: :cascade do |t|
+    t.integer "restaurant_id"
+    t.text "type"
     t.datetime "inspected_at"
     t.datetime "graded_at"
-    t.integer  "score"
-    t.text     "grade"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer "score"
+    t.text "grade"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["restaurant_id", "inspected_at"], name: "index_inspections_on_restaurant_id_and_inspected_at", unique: true
   end
 
-  add_index "inspections", ["restaurant_id", "inspected_at"], name: "index_inspections_on_restaurant_id_and_inspected_at", unique: true, using: :btree
-
-  create_table "restaurants", force: :cascade do |t|
-    t.text     "name"
-    t.text     "camis"
-    t.text     "building_number"
-    t.text     "street"
-    t.text     "zipcode"
-    t.integer  "borough"
-    t.text     "cuisine"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.text     "phone_number"
+  create_table "restaurants", id: :serial, force: :cascade do |t|
+    t.text "name"
+    t.text "camis"
+    t.text "building_number"
+    t.text "street"
+    t.text "zipcode"
+    t.integer "borough"
+    t.text "cuisine"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "phone_number"
+    t.index ["camis"], name: "index_restaurants_on_camis", unique: true
   end
 
-  add_index "restaurants", ["camis"], name: "index_restaurants_on_camis", unique: true, using: :btree
-
-  create_table "violations", force: :cascade do |t|
-    t.text     "description"
-    t.text     "code"
-    t.integer  "inspection_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+  create_table "violations", id: :serial, force: :cascade do |t|
+    t.text "description"
+    t.text "code"
+    t.integer "inspection_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inspection_id", "code"], name: "index_violations_on_inspection_id_and_code", unique: true
   end
-
-  add_index "violations", ["inspection_id", "code"], name: "index_violations_on_inspection_id_and_code", unique: true, using: :btree
 
 end
