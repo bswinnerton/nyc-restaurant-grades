@@ -33,13 +33,13 @@ violations  = []
 
 while !broken
   begin
-    puts "Fetching page #{dataset.page}..."
+    Rails.logger.info "Fetching page #{dataset.page}..."
 
     response        = RestClient.get(dataset.endpoint)
     parsed_response = JSON.parse(response)
 
     if parsed_response.empty?
-      puts "Fetched all pages"
+      Rails.logger.info "Fetched all pages"
       break
     end
 
@@ -97,8 +97,8 @@ while !broken
 
     dataset.page += 1
   rescue Exception => exception
-    puts exception
-    puts "Fetching failed at page #{dataset.page}"
+    Rails.logger.info "Fetching failed at page #{dataset.page}"
+    Rails.logger.fatal exception
     broken = true
   end
 end
@@ -107,26 +107,26 @@ restaurants = restaurants.uniq
 inspections = inspections.uniq
 violations  = violations.uniq
 
-puts "Importing Restaurants..."
+Rails.logger.info "Importing Restaurants..."
 Restaurant.import(restaurants, on_duplicate_key_ignore: { conflict_target: [:camis], columns: [:updated_at] })
 
-puts "Caching Restaurants..."
+Rails.logger.info "Caching Restaurants..."
 persisted_restaurants = Restaurant.all.group_by(&:camis)
 
-puts "Building Inspections..."
+Rails.logger.info "Building Inspections..."
 inspections = inspections.map do |inspection|
   restaurant = persisted_restaurants[inspection.restaurant_camis].first
   inspection.restaurant_id = restaurant.id
   inspection
 end
 
-puts "Importing Inspections..."
+Rails.logger.info "Importing Inspections..."
 Inspection.import(inspections, on_duplicate_key_ignore: true)
 
-puts "Caching Inspections..."
+Rails.logger.info "Caching Inspections..."
 persisted_inspections = Inspection.all.group_by(&:restaurant_id)
 
-puts "Building Violations..."
+Rails.logger.info "Building Violations..."
 violations = violations.map do |violation|
   restaurant = persisted_restaurants[violation.restaurant_camis].first
   restaurant_inspections = persisted_inspections[restaurant.id]
@@ -139,5 +139,5 @@ violations = violations.map do |violation|
   violation
 end
 
-puts "Importing Violations..."
+Rails.logger.info "Importing Violations..."
 Violation.import(violations, on_duplicate_key_ignore: true)
