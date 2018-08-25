@@ -11,12 +11,12 @@ services:
   web:
     container_name: nyc-restaurant-grades-web
     build:
-      context: ../
+      context: .
       dockerfile: ./docker/web/Dockerfile
     depends_on:
       - db
     env_file:
-      - ../.env
+      - .env
     expose:
       - 3000
     networks:
@@ -24,7 +24,7 @@ services:
   nginx:
     container_name: nyc-restaurant-grades-nginx
     build:
-      context: ../
+      context: .
       dockerfile: ./docker/nginx/Dockerfile
     depends_on:
       - web
@@ -43,6 +43,5 @@ volumes:
 
 networks:
   backend:
-    name: nyc-restaurant-grades-backend
   web:
     external: true
