@@ -3,10 +3,15 @@ class Inspection < ActiveRecord::Base
 
   MAX_COUNT = 30
 
+  attr_accessor :restaurant_camis
+
   self.inheritance_column = 'sti_type'
 
   belongs_to :restaurant
   has_many :violations
+
+  validates :restaurant_id, presence: true
+  validates :inspected_at, uniqueness: { scope: :restaurant_id }
 
   def url
     api_v1_restaurant_inspection_url(restaurant, self)

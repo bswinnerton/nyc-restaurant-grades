@@ -24,4 +24,16 @@ query {
 }
 ```
 
+## Development
+
+This application can be bootstrapped by doing the following:
+
+```
+bundle install
+bundle exec rake db:create db:migrate db:seed
+```
+
+The `db:seed` will start the bulk import from the NYC open data website and is
+idempotent.
+
 **The data backing this application is not regularly updated**

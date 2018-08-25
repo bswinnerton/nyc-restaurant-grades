@@ -7,6 +7,8 @@ class Restaurant < ActiveRecord::Base
 
   has_many :inspections
 
+  validates :camis, uniqueness: true
+
   def address
     "#{building_number} #{street}, #{borough.humanize}, New York #{zipcode}"
   end
