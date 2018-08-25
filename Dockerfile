@@ -12,6 +12,9 @@ COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 RUN bundle install --jobs 20 --retry 5
 
+# Precompile assets
+RUN bundle exec rake assets:precompile
+
 # Adding project files
 COPY . .
 
