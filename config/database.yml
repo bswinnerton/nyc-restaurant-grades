@@ -80,6 +80,4 @@ test:
 #
 production:
   <<: *default
-  database: nyc-restaurant-grades_production
-  username: nyc-restaurant-grades
-  password: <%= ENV['NYC-RESTAURANT-GRADES_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>

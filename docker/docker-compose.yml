@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ../tmp/db:/var/lib/postgresql/data
+  rails:
+    build:
+      context: ../
+      dockerfile: ./docker/rails/Dockerfile
+    depends_on:
+      - db
+    env_file:
+      - ../.env
+  nginx:
+    build:
+      context: ../
+      dockerfile: ./docker/nginx/Dockerfile
+    depends_on:
+      - rails
+    ports:
+      - 3001:80
