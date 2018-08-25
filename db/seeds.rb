@@ -9,7 +9,7 @@ class DataSet
   end
 
   def endpoint
-    "https://data.cityofnewyork.us/resource/xx67-kt59.json?#{parameters}"
+    "https://data.cityofnewyork.us/resource/9w7m-hzhe.json?#{parameters}"
   end
 
   def parameters
