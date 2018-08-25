@@ -9,7 +9,7 @@ services:
     networks:
       - backend
   web:
-    container_name: nyc-restaurant-grades-rails
+    container_name: nyc-restaurant-grades-web
     build:
       context: ../
       dockerfile: ./docker/web/Dockerfile
