@@ -99,7 +99,7 @@ while not_broken
       end
     end
 
-    Violation.import(violations)
+    Violation.import(violations, on_duplicate_key_ignore: true)
 
     puts "Completed page #{dataset.page}"
     dataset.page += 1
