@@ -13,6 +13,12 @@ services:
       - db
     env_file:
       - ../.env
+    expose:
+      - 3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:nyc-restaurant-grades.com"
   nginx:
     build:
       context: ../
