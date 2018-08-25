@@ -36,6 +36,8 @@ while not_broken
     inspections = []
     violations  = []
 
+    return if parsed_response.empty?
+
     parsed_response.each do |restaurant_data|
       next unless restaurant_data['dba']
 
