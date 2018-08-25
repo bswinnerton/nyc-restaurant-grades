@@ -8,11 +8,11 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - backend
-  rails:
+  web:
     container_name: nyc-restaurant-grades-rails
     build:
       context: ../
-      dockerfile: ./docker/rails/Dockerfile
+      dockerfile: ./docker/web/Dockerfile
     depends_on:
       - db
     env_file:
@@ -27,7 +27,7 @@ services:
       context: ../
       dockerfile: ./docker/nginx/Dockerfile
     depends_on:
-      - rails
+      - web
     networks:
       - web
       - backend
