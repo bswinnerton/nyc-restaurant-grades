@@ -53,24 +53,26 @@ while not_broken
       restaurants << restaurant
     end
 
-    Restaurant.import(restaurants, validate: false, on_duplicate_key_ignore: { conflict_target: [:camis], columns: [:updated_at] })
+    Restaurant.import(restaurants, on_duplicate_key_ignore: { conflict_target: [:camis], columns: [:updated_at] })
+    persisted_restaurants = Restaurant.all
 
     parsed_response.each do |restaurant_data|
       next unless restaurant_data['dba']
 
       inspection = Inspection.new(
-        restaurant:   Restaurant.find_by(camis: restaurant_data['camis']),
-        inspected_at: restaurant_data['inspection_date'].to_datetime,
-        type:         restaurant_data['inspection_type'],
-        graded_at:    restaurant_data['grade_date'],
-        score:        restaurant_data['score'],
-        grade:        restaurant_data['grade'],
+        restaurant_id:  persisted_restaurants.find { |restaurant| restaurant.camis == restaurant_data['camis'] }.id,
+        inspected_at:   restaurant_data['inspection_date'].to_datetime,
+        type:           restaurant_data['inspection_type'],
+        graded_at:      restaurant_data['grade_date'],
+        score:          restaurant_data['score'],
+        grade:          restaurant_data['grade'],
       )
 
       inspections << inspection
     end
 
-    Inspection.import(inspections, validate: false)
+    Inspection.import(inspections, on_duplicate_key_ignore: true)
+    persisted_inspections = Inspection.all
 
     parsed_response.each do |restaurant_data|
       next unless restaurant_data['dba']
@@ -79,12 +81,14 @@ while not_broken
       violation_code        = restaurant_data['violation_code']
 
       if violation_description || violation_code
-        inspection = Inspection
-                      .joins(:restaurant)
-                      .find_by(
-                        restaurants: {camis: restaurant_data['camis']},
-                        inspected_at: restaurant_data['inspection_date'],
-                      )
+        restaurant = persisted_restaurants.find do |restaurant|
+          restaurant.camis == restaurant_data['camis']
+        end
+
+        inspection = persisted_inspections.find do |inspection|
+          inspection.restaurant_id == restaurant.id &&
+            inspection.inspected_at == restaurant_data['inspection_date'].to_datetime
+        end
 
         violation = inspection.violations.build(
           inspection:   inspection,
@@ -96,7 +100,7 @@ while not_broken
       end
     end
 
-    Violation.import(violations, validate: false)
+    Violation.import(violations)
 
     puts "Completed page #{dataset.page}"
     dataset.page += 1
