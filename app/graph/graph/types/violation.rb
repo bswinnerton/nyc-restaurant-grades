@@ -20,6 +20,10 @@ module Graph
       field :inspection do
         type -> { Types::Inspection }
         description 'The inspection this violation was a part of.'
+
+        resolve -> (violation, arguments, context) do
+          Loaders::RecordLoader.for(::Inspection).load(violation.inspection_id)
+        end
       end
     end
   end

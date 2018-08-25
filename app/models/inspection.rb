@@ -1,6 +1,8 @@
 class Inspection < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
+  MAX_COUNT = 30
+
   self.inheritance_column = 'sti_type'
 
   belongs_to :restaurant

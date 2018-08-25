@@ -16,16 +16,45 @@ module Graph
         argument :borough, Types::RestaurantBoroughEnum
 
         resolve -> (object, arguments, context) do
-          name    = arguments['name']
-          borough = ::Restaurant.boroughs[arguments['borough']]
+          name = arguments['name']
 
-          ::Restaurant.find_by(name: name, borough: borough)
+          if arguments['borough']
+            borough = ::Restaurant.boroughs[arguments['borough']]
+            ::Restaurant.find_by(name: name, borough: borough)
+          else
+            ::Restaurant.find_by(name: name)
+          end
         end
       end
 
-      connection :restaurants do
-        type -> { !Types::Restaurant.connection_type }
+      field :restaurants do
+        type -> { !types[Types::Restaurant] }
         description 'Perform a search across all Restaurants.'
+
+        argument :name, types.String
+        argument :borough, Types::RestaurantBoroughEnum
+
+        resolve -> (object, arguments, context) do
+          name    = arguments['name']
+          borough = ::Restaurant.boroughs[arguments['borough']]
+
+          scope = if name && borough
+                    ::Restaurant.where(name: name, borough: borough)
+                  elsif name
+                    ::Restaurant.where(name: name)
+                  elsif borough
+                    ::Restaurant.where(borough: borough)
+                  else
+                    ::Restaurant.all
+                  end
+
+          scope.limit(::Restaurant::MAX_COUNT)
+        end
+      end
+
+      connection :paginatedRestaurants do
+        type -> { !Connections::Restaurants }
+        description 'Perform a search across all Restaurants and return a Relay connection.'
 
         argument :name, types.String
         argument :borough, Types::RestaurantBoroughEnum
@@ -46,9 +75,28 @@ module Graph
         end
       end
 
-      connection :inspections, -> { !Types::Inspection.connection_type } do
+      field :inspections do
+        type -> { !types[Types::Inspection] }
         description 'Perform a search across all Inspections.'
-        type -> { Types::Inspection }
+
+        argument :grade, types.String
+
+        resolve -> (object, arguments, context) do
+          grade = arguments['grade']
+
+          scope = if grade
+                    ::Inspection.includes(:restaurant).where(grade: grade)
+                  else
+                    ::Inspection.includes(:restaurant).all
+                  end
+
+          scope.limit(::Inspection::MAX_COUNT)
+        end
+      end
+
+      connection :paginatedInspections do
+        type -> { !Connections::Inspections }
+        description 'Perform a search across all Inspections.'
 
         argument :grade, types.String
 

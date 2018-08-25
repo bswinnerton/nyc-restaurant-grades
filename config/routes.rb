@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  mount GraphiQL::Rails::Engine, at: '/', graphql_path: '/graphql'
+  root 'home#index'
+
+  mount GraphiQL::Rails::Engine, at: '/graphql', graphql_path: '/graphql'
 
   namespace :api do
     namespace :v1 do
