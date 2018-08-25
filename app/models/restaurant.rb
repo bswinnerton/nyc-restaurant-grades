@@ -1,4 +1,4 @@
-class Restaurant < ActiveRecord::Base
+class Restaurant < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   MAX_COUNT = 30
