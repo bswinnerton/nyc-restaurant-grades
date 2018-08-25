@@ -6,6 +6,8 @@ services:
     container_name: nyc-restaurant-grades-db
     volumes:
       - db_data:/var/lib/postgresql/data
+    networks:
+      - backend
   rails:
     container_name: nyc-restaurant-grades-rails
     build:
@@ -17,10 +19,8 @@ services:
       - ../.env
     expose:
       - 3000
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=web"
-      - "traefik.frontend.rule=Host:nyc-restaurant-grades.com"
+    networks:
+      - backend
   nginx:
     container_name: nyc-restaurant-grades-nginx
     build:
@@ -30,13 +30,18 @@ services:
       - rails
     networks:
       - web
+      - backend
     ports:
       - 3001:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:nyc-restaurant-grades.com"
 
 volumes:
   db_data:
 
 networks:
+  backend:
   web:
     external: true
-
