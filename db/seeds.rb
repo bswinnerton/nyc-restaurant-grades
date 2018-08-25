@@ -1,3 +1,7 @@
+# Suppress SQL output
+old_active_record_log_level = ActiveRecord::Base.logger.level
+ActiveRecord::Base.logger.level = 1
+
 class DataSet
   ORDER = :id.freeze
   LIMIT = 50000.freeze
@@ -30,6 +34,8 @@ dataset = DataSet.new
 restaurants = []
 inspections = []
 violations  = []
+
+Rails.logger.info "Starting import of NYC OpenData dataset"
 
 while !broken
   begin
@@ -141,3 +147,8 @@ end
 
 Rails.logger.info "Importing Violations..."
 Violation.import(violations, batch_size: 50000, on_duplicate_key_ignore: true)
+
+Rails.logger.info "Import of NYC OpenData dataset complete"
+
+# Reset logger to what it was before this script began
+ActiveRecord::Base.logger.level = old_active_record_log_level
