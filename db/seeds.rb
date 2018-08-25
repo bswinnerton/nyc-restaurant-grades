@@ -1,6 +1,6 @@
 class DataSet
   ORDER = :id.freeze
-  LIMIT = 1000.freeze
+  LIMIT = 50000.freeze
 
   attr_accessor :page
 
@@ -24,19 +24,24 @@ class DataSet
   end
 end
 
-not_broken = true
+broken = false
 dataset = DataSet.new
 
-while not_broken
+restaurants = []
+inspections = []
+violations  = []
+
+while !broken
   begin
+    puts "Fetching page #{dataset.page}..."
+
     response        = RestClient.get(dataset.endpoint)
     parsed_response = JSON.parse(response)
 
-    restaurants = []
-    inspections = []
-    violations  = []
-
-    return if parsed_response.empty?
+    if parsed_response.empty?
+      puts "Fetched all pages"
+      break
+    end
 
     parsed_response.each do |restaurant_data|
       next unless restaurant_data['dba']
@@ -55,26 +60,21 @@ while not_broken
       restaurants << restaurant
     end
 
-    Restaurant.import(restaurants, on_duplicate_key_ignore: { conflict_target: [:camis], columns: [:updated_at] })
-    persisted_restaurants = Restaurant.all.group_by(&:camis)
-
     parsed_response.each do |restaurant_data|
       next unless restaurant_data['dba']
 
       inspection = Inspection.new(
-        restaurant_id:  persisted_restaurants[restaurant_data['camis']].first.id,
-        inspected_at:   restaurant_data['inspection_date'].to_datetime,
-        type:           restaurant_data['inspection_type'],
-        graded_at:      restaurant_data['grade_date'],
-        score:          restaurant_data['score'],
-        grade:          restaurant_data['grade'],
+        inspected_at: restaurant_data['inspection_date'].to_datetime,
+        type:         restaurant_data['inspection_type'],
+        graded_at:    restaurant_data['grade_date'],
+        score:        restaurant_data['score'],
+        grade:        restaurant_data['grade'],
       )
+
+      inspection.restaurant_camis = restaurant_data['camis']
 
       inspections << inspection
     end
-
-    Inspection.import(inspections, on_duplicate_key_ignore: true)
-    persisted_inspections = Inspection.all.group_by(&:restaurant_id)
 
     parsed_response.each do |restaurant_data|
       next unless restaurant_data['dba']
@@ -83,35 +83,61 @@ while not_broken
       violation_code        = restaurant_data['violation_code']
 
       if violation_description || violation_code
-        restaurant = persisted_restaurants[restaurant_data['camis']].first
-
-        restaurant_inspections = persisted_inspections[restaurant.id]
-
-        inspection = restaurant_inspections.find do |inspection|
-          inspection.inspected_at == restaurant_data['inspection_date'].to_datetime
-        end
-
-        violation = inspection.violations.build(
-          inspection:   inspection,
+        violation = Violation.new(
           code:         violation_code,
           description:  violation_description,
         )
+
+        violation.restaurant_camis  = restaurant_data['camis']
+        violation.inspected_at      = restaurant_data['inspection_date'].to_datetime
 
         violations << violation
       end
     end
 
-    Violation.import(violations, on_duplicate_key_ignore: true)
-
-    puts "Completed page #{dataset.page}"
     dataset.page += 1
-
-    restaurants = []
-    inspections = []
-    violations  = []
   rescue Exception => exception
     puts exception
-    puts "Failed at page #{dataset.page}"
-    not_broken = false
+    puts "Fetching failed at page #{dataset.page}"
+    broken = true
   end
 end
+
+restaurants = restaurants.uniq
+inspections = inspections.uniq
+violations  = violations.uniq
+
+puts "Importing Restaurants..."
+Restaurant.import(restaurants, on_duplicate_key_ignore: { conflict_target: [:camis], columns: [:updated_at] })
+
+puts "Caching Restaurants..."
+persisted_restaurants = Restaurant.all.group_by(&:camis)
+
+puts "Building Inspections..."
+inspections = inspections.map do |inspection|
+  restaurant = persisted_restaurants[inspection.restaurant_camis].first
+  inspection.restaurant_id = restaurant.id
+  inspection
+end
+
+puts "Importing Inspections..."
+Inspection.import(inspections, on_duplicate_key_ignore: true)
+
+puts "Caching Inspections..."
+persisted_inspections = Inspection.all.group_by(&:restaurant_id)
+
+puts "Building Violations..."
+violations = violations.map do |violation|
+  restaurant = persisted_restaurants[violation.restaurant_camis].first
+  restaurant_inspections = persisted_inspections[restaurant.id]
+
+  inspection = restaurant_inspections.find do |inspection|
+    inspection.inspected_at == violation.inspected_at
+  end
+
+  violation.inspection = inspection
+  violation
+end
+
+puts "Importing Violations..."
+Violation.import(violations, on_duplicate_key_ignore: true)

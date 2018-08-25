@@ -3,6 +3,8 @@ class Violation < ActiveRecord::Base
 
   MAX_COUNT = 30
 
+  attr_accessor :restaurant_camis, :inspected_at
+
   belongs_to :inspection
   has_one :restaurant, through: :inspection
 

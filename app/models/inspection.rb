@@ -3,6 +3,8 @@ class Inspection < ActiveRecord::Base
 
   MAX_COUNT = 30
 
+  attr_accessor :restaurant_camis
+
   self.inheritance_column = 'sti_type'
 
   belongs_to :restaurant
